@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('@jacinth/jacinth-dev')
+require('@jacinthjs/jacinth-dev')

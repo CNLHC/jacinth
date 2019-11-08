@@ -1,4 +1,4 @@
-import  program from 'commander'
+import program from 'commander'
 
 program
     .version('0.1.0')
@@ -6,12 +6,12 @@ program
 program
     .command("dev")
     .description('run dev server')
-    .option("-p, --port <port>", "port to listen",3002)
-    .option("-H, --host <host>", "port to listen","127.0.0.1")
+    .option("-p, --port <port>", "port to listen", 3002)
+    .option("-H, --host <host>", "port to listen", "127.0.0.1")
     .action(require('./command/dev').default)
 
 if (!process.argv.slice(2).length) {
     program.outputHelp();
-    }
+}
 program.parse(process.argv);
 

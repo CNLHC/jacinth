@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 import fastify from "fastify"
 import chalk from "chalk"
+import {getEnv} from '../env/index'
 
 const server = fastify({ })
 
 let serverRunning=false
 
-module.exports = async (args: any) => {
+module.exports = async () => {
+  const env = getEnv()
   if(!serverRunning){
     server.register(require('./plugins/next'))
-    const port = parseInt(args.port || "3002")
-    const host = args.host || "localhost"
-    const address = await server.listen(port, host )
+    const address = await server.listen(env.port, env.host)
     console.log(chalk.green(`server available at ${address}`))
     serverRunning=true
   }

@@ -20,12 +20,18 @@ export async function compile(source: string, opts: IOpt) {
     let output;
     try {
         output = await transformFileAsync(source, {
+            plugins:[require("@babel/plugin-transform-runtime") ],
+                
             presets: [
-                [require("babel-preset-minify")],
-                [require("@babel/preset-typescript"), {
-                    module: 'commonjs'
+                // [require("babel-preset-minify")],
+                [require("@babel/preset-env"),{
+                    targets:{
+                        node:12
+                    },
+                    modules:'commonjs',
+                    forceAllTransforms:true 
                 }],
-                [require("@babel/preset-env")]
+                [require("@babel/preset-typescript") ],
             ]
         })
     } catch (e) {

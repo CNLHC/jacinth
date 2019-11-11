@@ -2,18 +2,24 @@ import webpack from 'webpack'
 import path from 'path'
 import { getJacinthRoot } from '../util/path'
 const withCSS = require('@zeit/next-css')
+const localLoader = (loader: string) => path.join(getJacinthRoot(), 'node_modules', loader)
+
+const localLoaderList = [
+  'css-loader',
+  'ignore-loader',
+  'extracted-loader'
+]
 
 export default withCSS({
   //@ts-ignore
-  webpack(config:webpack.Configuration, ctx: any) {
+  webpack(config: webpack.Configuration, ctx: any) {
     //@ts-ignore
     const { buildId, dev, isServer, defaultLoaders, webpack } = ctx
-    config.resolveLoader={
+    config.resolveLoader = {
       ...config.resolveLoader,
-      alias:{
+      alias: {
         ...config.resolveLoader?.alias,
-        'css-loader':path.join(getJacinthRoot(),'node_modules','css-loader'),
-        'ignore-loader':path.join(getJacinthRoot(),'node_modules','ignore-loader'),
+        ...localLoaderList.reduce((acc, cur) => ({ ...acc, [cur]: localLoader(cur) }), {})
       }
     }
     console.log(getJacinthRoot())

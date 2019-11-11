@@ -6,6 +6,13 @@ import conf from '../../wrapper/next.config'
 import { HttpServer, RawRequest, RawResponse } from '../types/plugin'
 
 const dev = process.env.NODE_ENV !== 'production'
+const nextApp = next({
+    dev ,
+    conf,
+    dir:process.cwd()
+})
+let __devCacheFlag = false
+
 
 const NextSSR = fp<
     HttpServer,
@@ -22,12 +29,8 @@ const NextSSR = fp<
         _opts: undefined,
         done: fp.nextCallback
     ) {
-        const nextApp = next({
-            dev ,
-            conf,
-            dir:process.cwd()
-        })
-        await nextApp.prepare()
+        if(!__devCacheFlag)
+            await nextApp.prepare()
         const nextHandler = nextApp.getRequestHandler()
         if (dev) {
             app.get('/_next/*', (req, reply) => {
@@ -41,6 +44,8 @@ const NextSSR = fp<
                 reply.sent = true
             })
         })
+        if(dev)
+            __devCacheFlag=true
         done()
     }
 )

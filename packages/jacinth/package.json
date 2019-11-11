@@ -19,6 +19,7 @@
     "@types/glob": "^7.1.1",
     "@types/webpack": "^4.39.8",
     "@types/winston": "^2.4.4",
+    "@zeit/next-css": "^1.0.1",
     "babel-preset-minify": "^0.5.1",
     "chalk": "^2.4.2",
     "chokidar": "^3.3.0",

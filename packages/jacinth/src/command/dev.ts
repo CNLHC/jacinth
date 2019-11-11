@@ -2,10 +2,11 @@ import chokidar from 'chokidar'
 import debounce from 'debounce'
 import preCheck from '../util/check';
 import { initEnv, getEnv } from '../env';
-import glob from 'glob'
 import path from 'path'
 import { compile } from '../util/build'
 import { logger } from '../util/logging'
+import { gatherFile as gF } from '../util/path'
+
 type IArgs = any
 export default async (args: IArgs) => {
     preCheck()
@@ -13,17 +14,9 @@ export default async (args: IArgs) => {
     const env = getEnv()
     const loadBFF: () => void = require('../server/index')
     let ServerFileSet: Set<string> = new Set()
-    const ServerFilePattern = path.join(env.serverDir, '**', '*.ts')
     const gatherFile = async () => {
-        return new Promise<void>((res, rej) =>
-            glob(ServerFilePattern, (err, matches) => {
-                if (err) {
-                    rej(err)
-                }
-                ServerFileSet = new Set([...ServerFileSet, ...matches])
-                res()
-            })
-        )
+        const res = await gF(env.serverDir, ['**', '*.ts'])
+        ServerFileSet = new Set([...res])
     }
 
     const buildFile = async () => {
@@ -31,10 +24,8 @@ export default async (args: IArgs) => {
             logger.debug(`compile server file ${e}`)
             const fileName = path.basename(e).
                 split('.').slice(0, -1).join('.')
-
             compile(e, {
                 outPath: path.join(env.cacheDir, `${fileName}.js`)
-
             })
 
         })
@@ -42,25 +33,19 @@ export default async (args: IArgs) => {
 
     await gatherFile()
     await loadBFF()
-    const debouncedLoadBFF = debounce(loadBFF, 200, true)
-    const debouncedGatherFile = debounce(gatherFile, 200, true)
-    const debouncedBuildFile = debounce(buildFile, 200, true)
-
-
 
     try {
         chokidar.watch(env.cacheDir)
-            .on('all', (_evt) => {
-                logger.debug(`reprocess server file due to Event(${_evt})`)
-                debouncedLoadBFF()
-            })
+            .on('change', debounce((_evt) => {
+                loadBFF()
+            }, 200, true))
 
         chokidar.watch(env.serverDir)
-            .on('all', async (_evt, _path) => {
+            .on('all', debounce((_evt, _path) => {
                 logger.debug(`reprocess server file due to Event(${_evt})-${_path}`)
-                debouncedGatherFile()
-                debouncedBuildFile()
-            })
+                gatherFile()
+                buildFile()
+            }, 200, true))
     }
     catch (e) {
         console.error("Some error occur", (e as Error).stack)

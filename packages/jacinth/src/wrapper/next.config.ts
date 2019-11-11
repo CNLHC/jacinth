@@ -2,12 +2,15 @@ import webpack from 'webpack'
 import path from 'path'
 import { getJacinthRoot } from '../util/path'
 const withCSS = require('@zeit/next-css')
-const localLoader = (loader: string) => path.join(getJacinthRoot(), 'node_modules', loader)
+const localDep = (loader: string) => path.join(getJacinthRoot(), 'node_modules', loader)
 
 const localLoaderList = [
   'css-loader',
   'ignore-loader',
-  'extracted-loader'
+  'extracted-loader',
+]
+const localRuntimeList = [
+  "@babel/runtime-corejs2"
 ]
 
 export default withCSS({
@@ -15,14 +18,20 @@ export default withCSS({
   webpack(config: webpack.Configuration, ctx: any) {
     //@ts-ignore
     const { buildId, dev, isServer, defaultLoaders, webpack } = ctx
+    config.resolve = {
+      ...config.resolve,
+      alias: {
+        ...config.resolve?.alias,
+        ...localRuntimeList.reduce((a, c) => ({ ...a, [c]: localDep(c) }), {})
+      }
+    }
     config.resolveLoader = {
       ...config.resolveLoader,
       alias: {
         ...config.resolveLoader?.alias,
-        ...localLoaderList.reduce((acc, cur) => ({ ...acc, [cur]: localLoader(cur) }), {})
+        ...localLoaderList.reduce((acc, cur) => ({ ...acc, [cur]: localDep(cur) }), {})
       }
     }
-    console.log(getJacinthRoot())
     return config
   }
 })

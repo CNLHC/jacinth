@@ -15,7 +15,6 @@ module.exports = async () => {
     console.log(chalk.green(`server available at ${address}`))
     serverRunning=true
   }
-  console.log("do reloading here")
 
   return serverRunning
 }

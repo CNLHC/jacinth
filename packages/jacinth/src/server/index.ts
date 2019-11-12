@@ -3,6 +3,8 @@ import fastify from "fastify";
 import chalk from "chalk";
 import { getEnv } from "../env/index";
 import { logger } from "../util/logging";
+import pluginLoader from "./loader/plugin";
+import restLoader from "./loader/rest";
 
 let serverRunning = false;
 let server = fastify({});
@@ -16,10 +18,10 @@ module.exports = async () => {
     server = fastify({});
   }
 
+  server.register(pluginLoader, { cacheDir: env.pluginCacheDir });
+
   server.after(() => {
-    server.register(require("./loader/rest").default, {
-      cacheDir: env.cacheDir
-    });
+    server.register(restLoader, { cacheDir: env.RESTCacheDir });
     server.register(require("./plugins/next"));
   });
 

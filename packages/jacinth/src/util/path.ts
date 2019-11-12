@@ -19,6 +19,7 @@ export const unsafeGetPagesDir = async (cwd: string) =>
 export const unsafeGetServerDir = async (cwd: string) =>
     (await getServerDir(cwd)) as string
 
+
 export const gatherFile = async (baseDir: string, pattern: string[]) => {
     return new Promise<string[]>((res, rej) =>
         glob(path.join(baseDir, ...pattern), (err, matches) => {

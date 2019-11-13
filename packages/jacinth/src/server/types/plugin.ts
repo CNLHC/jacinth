@@ -16,6 +16,6 @@ export type TPlugin<T extends {}> = fastify.Plugin<
 
 export type TMiddleWare = fastify.Middleware<
   HttpServer,
-  RawRequest,
-  RawResponse
+  fastify.FastifyRequest,
+  fastify.FastifyReply<RawResponse>
 >;

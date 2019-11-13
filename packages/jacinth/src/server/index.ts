@@ -18,6 +18,16 @@ module.exports = async () => {
     server = fastify({});
   }
 
+  server.register(require("fastify-multipart"))
+
+  server.register(require("fastify-cookie"));
+  server.register(require("fastify-session"),{
+    cookieName: 'sessionId',
+    secret: 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+    cookie: { secure: false },
+    expires: 1800000
+  });
+
   server.register(pluginLoader, { cacheDir: env.pluginCacheDir });
 
   server.after(() => {

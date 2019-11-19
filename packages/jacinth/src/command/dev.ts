@@ -4,13 +4,14 @@ import preCheck from "../util/check";
 import { initEnv, getEnv } from "../env";
 import { transformDir } from "../util/build";
 import { logger } from "../util/logging";
+import server from "../server";
 
 type IArgs = any;
 export default async (args: IArgs) => {
   preCheck({ command: "dev" });
   initEnv(args);
   const env = getEnv();
-  const loadBFF: () => void = require("../server/index");
+  const loadBFF: () => void = () => server();
 
   await loadBFF();
 

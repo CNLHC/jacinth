@@ -21,7 +21,7 @@ export default async (args: any) => {
   transformDir(env.serverDir, env.distDir).then(() =>
     logger.info("Server Build Complete")
   );
-  const nextDistDir = path.resolve(env.distDir, "next");
+  const nextDistDir = path.resolve(env.distDir, ".next");
   await del(nextDistDir);
   await build(env.rootDir);
   await mv(env.nextPath, nextDistDir);

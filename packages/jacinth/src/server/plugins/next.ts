@@ -4,12 +4,15 @@ import fp from "fastify-plugin";
 import conf from "../../wrapper/next.config";
 
 import { HttpServer, RawRequest, RawResponse } from "../types/plugin";
+import { getEnv } from "../../env";
+
+const env=getEnv()
 
 const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({
   dev,
   conf,
-  dir: process.cwd()
+  dir: dev?process.cwd():env.distDir
 });
 let __devCacheFlag = false;
 

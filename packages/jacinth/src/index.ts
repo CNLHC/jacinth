@@ -14,6 +14,11 @@ program
   .description("make a production build")
   .action(require("./command/build").default);
 
+program
+  .command("start")
+  .description("run the server")
+  .action(require("./command/start").default);
+
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }

@@ -7,7 +7,7 @@ import { logger } from "../util/logging";
 
 type IArgs = any;
 export default async (args: IArgs) => {
-  preCheck();
+  preCheck({ command: "dev" });
   initEnv(args);
   const env = getEnv();
   const loadBFF: () => void = require("../server/index");

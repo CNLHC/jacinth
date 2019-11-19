@@ -20,15 +20,11 @@ interface PresetEnv {
     cacheDir: string[];
     RESTCacheDir: string[];
     pluginCacheDir: string[];
+    distDir: string[];
+    rootDir: string[];
+    nextPath: string[];
   };
 }
-
-type IAbsolutePath = { [key in keyof PresetEnv["relativePath"]]: string };
-
-interface RuntimeEnv extends IAbsolutePath {}
-
-type Env = PresetEnv & IAbsolutePath;
-
 const defaultPresetEnv: PresetEnv = {
   port: 3002,
   host: "localhost",
@@ -37,9 +33,18 @@ const defaultPresetEnv: PresetEnv = {
     RESTCacheDir: [".jacinth", "rest"],
     pluginCacheDir: [".jacinth", "plugin"],
     serverDir: ["server"],
-    serverTsConfPath: ["server", "tsconfig.json"]
+    serverTsConfPath: ["server", "tsconfig.json"],
+    distDir: ["public"],
+    rootDir: [],
+    nextPath: [".next"]
   }
 };
+
+type IAbsolutePath = { [key in keyof PresetEnv["relativePath"]]: string };
+
+interface RuntimeEnv extends IAbsolutePath {}
+
+type Env = PresetEnv & IAbsolutePath;
 
 const defaultEnv: Env = {
   ...defaultPresetEnv,

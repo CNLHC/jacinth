@@ -14,7 +14,7 @@ const RESTFulLoader: TPlugin<TOpt> = async (app, opt, done) => {
     delete require.cache[require.resolve(e)];
     const mod = require(e);
     const opt = {
-      prefix: "/api"
+      prefix: "/api",
     };
     logger.debug(`register custom REST api  in ${e}`);
     if (typeof mod === "function") app.register(mod, opt);

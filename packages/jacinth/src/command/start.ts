@@ -7,7 +7,7 @@ export default async (args: any) => {
   preCheck();
   initEnv(args);
   process.env.NODE_ENV = "production";
-  console.log("hi?")
+  console.log("hi?");
   server()
     .then(() => logger.info("Server Terminated"))
     .catch(() => logger.error("Server exit unexpectedly"));

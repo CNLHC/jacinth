@@ -1,37 +1,35 @@
-import webpack from 'webpack'
-import path from 'path'
-import { getJacinthRoot } from '../util/path'
-const withCSS = require('@zeit/next-css')
-const localDep = (loader: string) => path.join(getJacinthRoot(), 'node_modules', loader)
+import webpack from "webpack";
+import path from "path";
+import { getJacinthRoot } from "../util/path";
+const withCSS = require("@zeit/next-css");
+const localDep = (loader: string) =>
+  path.join(getJacinthRoot(), "node_modules", loader);
 
-const localLoaderList = [
-  'css-loader',
-  'ignore-loader',
-  'extracted-loader',
-]
-const localRuntimeList = [
-  "@babel/runtime-corejs2"
-]
+const localLoaderList = ["css-loader", "ignore-loader", "extracted-loader"];
+const localRuntimeList = ["@babel/runtime-corejs2"];
 
 export default withCSS({
-  //@ts-ignore
+  // @ts-ignore
   webpack(config: webpack.Configuration, ctx: any) {
-    //@ts-ignore
-    const { buildId, dev, isServer, defaultLoaders, webpack } = ctx
+    // @ts-ignore
+    const { buildId, dev, isServer, defaultLoaders, webpack } = ctx;
     config.resolve = {
       ...config.resolve,
       alias: {
         ...config.resolve?.alias,
-        ...localRuntimeList.reduce((a, c) => ({ ...a, [c]: localDep(c) }), {})
-      }
-    }
+        ...localRuntimeList.reduce((a, c) => ({ ...a, [c]: localDep(c) }), {}),
+      },
+    };
     config.resolveLoader = {
       ...config.resolveLoader,
       alias: {
         ...config.resolveLoader?.alias,
-        ...localLoaderList.reduce((acc, cur) => ({ ...acc, [cur]: localDep(cur) }), {})
-      }
-    }
-    return config
-  }
-})
+        ...localLoaderList.reduce(
+          (acc, cur) => ({ ...acc, [cur]: localDep(cur) }),
+          {}
+        ),
+      },
+    };
+    return config;
+  },
+});

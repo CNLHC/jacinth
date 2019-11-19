@@ -5,7 +5,7 @@ function calRuntimeEnv(p: PresetEnv): RuntimeEnv {
   return Object.entries(p.relativePath).reduce(
     (acc, [k, v]) => ({
       ...acc,
-      [k]: getAbsolute(v)
+      [k]: getAbsolute(v),
     }),
     {} as RuntimeEnv
   );
@@ -36,8 +36,8 @@ const defaultPresetEnv: PresetEnv = {
     serverTsConfPath: ["server", "tsconfig.json"],
     distDir: ["public"],
     rootDir: [],
-    nextPath: [".next"]
-  }
+    nextPath: [".next"],
+  },
 };
 
 type IAbsolutePath = { [key in keyof PresetEnv["relativePath"]]: string };
@@ -48,18 +48,18 @@ type Env = PresetEnv & IAbsolutePath;
 
 const defaultEnv: Env = {
   ...defaultPresetEnv,
-  ...calRuntimeEnv(defaultPresetEnv)
+  ...calRuntimeEnv(defaultPresetEnv),
 };
 
-let __env: Env | undefined = undefined;
+let __env: Env | undefined;
 
 export function initEnv(args: { [key: string]: any }) {
   Object.keys(args).forEach(key =>
     args[key] === undefined ? delete args[key] : {}
   );
-  let tEnv: PresetEnv = {
+  const tEnv: PresetEnv = {
     ...defaultPresetEnv,
-    ...args
+    ...args,
   };
   __env = { ...tEnv, ...calRuntimeEnv(tEnv) };
 }

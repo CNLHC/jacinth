@@ -15,7 +15,7 @@ export default async (args: any) => {
   const env = getEnv();
 
   fs.mkdirSync(env.distDir, {
-    recursive: true
+    recursive: true,
   });
 
   transformDir(env.serverDir, env.distDir).then(() =>

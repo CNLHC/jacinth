@@ -27,7 +27,7 @@ export const transformDir = async (srcDir: string, outDir: string) => {
     const relativePath = path.dirname(path.relative(srcDir, e));
 
     compile(e, {
-      outPath: path.join(outDir, relativePath, `${fileName}.js`)
+      outPath: path.join(outDir, relativePath, `${fileName}.js`),
     });
   });
   return tFileSet;
@@ -45,14 +45,14 @@ export async function compile(source: string, opts: IOpt) {
           require("@babel/preset-env"),
           {
             targets: {
-              node: 12
+              node: 12,
             },
             modules: "commonjs",
-            forceAllTransforms: true
-          }
+            forceAllTransforms: true,
+          },
         ],
-        [require("@babel/preset-typescript")]
-      ]
+        [require("@babel/preset-typescript")],
+      ],
     });
   } catch (e) {
     logger.error(e.message);

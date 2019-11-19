@@ -13,7 +13,7 @@ const dev = process.env.NODE_ENV !== "production";
 export default async () => {
   logger.debug(`reload bff under ${dev ? "dev" : "production"} mode`);
   const env = getEnv();
-  //if there already have one instance running, kill it and get a new one
+  // if there already have one instance running, kill it and get a new one
   if (serverRunning) {
     server.close();
     server = fastify({});
@@ -26,7 +26,7 @@ export default async () => {
     cookieName: "sessionId",
     secret: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     cookie: { secure: false },
-    expires: 1800000
+    expires: 1800000,
   });
 
   server.register(pluginLoader, { cacheDir: env.pluginCacheDir });

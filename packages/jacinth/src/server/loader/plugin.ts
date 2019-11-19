@@ -8,7 +8,8 @@ type TOpt = {
 };
 
 const RESTFulLoader: TPlugin<TOpt> = async (app, opt, done) => {
-  const gatherRESTRoutes = async () => await gatherFile(opt.cacheDir, ["**","!(_)*.js"]);
+  const gatherRESTRoutes = async () =>
+    await gatherFile(opt.cacheDir, ["**", "!(_)*.js"]);
   const plugins = await gatherRESTRoutes();
 
   plugins.forEach(e => {
@@ -25,7 +26,7 @@ const RESTFulLoader: TPlugin<TOpt> = async (app, opt, done) => {
     }
   });
   done();
-  return app
+  return app;
 };
 
 export default fp(RESTFulLoader);

@@ -1,6 +1,6 @@
 {
   "name": "@jacinthjs/jacinth-dev",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "private": false,
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "next build && tsc --project tsconfig.server.json",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "lint:fix": "prettier --loglevel debug --write  \"src/**/*.ts\" ",
-    "commit": "git-cz commit"
+    "commit": "git-cz"
   },
   "dependencies": {
     "@babel/runtime": "^7.7.2",
@@ -58,6 +58,8 @@
     "nodemon": "^1.19.4",
     "prettier": "^1.19.1",
     "prettier-eslint": "^9.0.1",
+    "semantic-release": "^15.13.31",
+    "semantic-release-cli": "^5.2.3",
     "ts-node": "^8.1.0",
     "typescript": "^3.7.2"
   },

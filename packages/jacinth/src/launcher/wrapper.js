@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('@jacinthjs/jacinth-dev')
+require("../index");

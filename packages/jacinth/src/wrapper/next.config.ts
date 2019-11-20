@@ -6,7 +6,7 @@ const localDep = (loader: string) =>
   path.join(getJacinthRoot(), "node_modules", loader);
 
 const localLoaderList = ["css-loader", "ignore-loader", "extracted-loader"];
-const localRuntimeList = ["@babel/runtime-corejs2"];
+const localRuntimeList: string[] = [];
 
 export default withCSS({
   // @ts-ignore
